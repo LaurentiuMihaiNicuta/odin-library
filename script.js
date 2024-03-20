@@ -15,15 +15,22 @@ class UI {
     
 
     constructor(){
+
         this.container = document.getElementById('book-container')
+        this.addButton = document.getElementById('add-btn');
+        this.modal = document.getElementById('modal');
+        this.form = document.getElementById('form');
+        this.ButtonListener(); 
+        this.UILibrary = usedLibrary.getArraylibrary();
+
     }
 
     render = () => {
         this.container.innerHTML = " ";
 
-        const UILibrary = usedLibrary.getArraylibrary();
+        
 
-        UILibrary.forEach(book => {
+        this.UILibrary.forEach(book => {
             
             const bookContainerContent = document.createElement('div');
             const bookContainerFooter = document.createElement('div');
@@ -33,8 +40,9 @@ class UI {
             const status = document.createElement('button');
 
             deleteButton.textContent = 'Delete Book';
-            deleteButton.classList.add('btn-info')
+            deleteButton.classList.add('btn-danger')
             status.textContent = book.status;
+            status.classList.add('btn-info')
 
             this.container.appendChild(bookContainer);
 
@@ -54,25 +62,70 @@ class UI {
            bookContainerFooter.appendChild(status);
             
            deleteButton.addEventListener('click' , () => {
-            this.delete(UILibrary,book)
+            this.delete(this.UILibrary,book)
+           })
+
+           status.addEventListener('click' , () => {
+            this.changeStatus(book)
+           
            })
 
         });
 
-
+    
         
     }
 
-    delete = (library,book) => {
-        let index = library.indexOf(book);;
+    changeStatus = (book) => {
+        book.status = !book.status;
+        this.render();
+       
+    }
 
-        library.splice(index,1);
+ 
+ 
+
+    delete = (library,book) => {
         
+        let index = library.indexOf(book);;
+        library.splice(index,1);
         this.render();
     }   
 
+    ButtonListener = () => {
+        this.addButton.addEventListener('click', e => this.openModal());
+        this.form.addEventListener('submit', this.submitForm,) ;
 
+    }
+
+     openModal = () => {
+        console.log('am deschis modalul')
+        this.modal.style.display = "flex";
+        
+     }
     
+    submitForm = (event) => {
+
+        event.preventDefault();
+        
+        const title = document.getElementById('name').value ;
+        const author = document.getElementById('author').value ;
+        const pages = document.getElementById('pages').value;
+        const status = document.getElementById('status').checked ;
+    
+        const newBook = new Book(title, author, pages, status);
+        
+        usedLibrary.addToLibrary(newBook);
+
+        this.UILibrary = usedLibrary.getArraylibrary();
+
+        this.render();
+        
+        this.modal.style.display = 'none';
+
+        this.form.reset();
+
+    }
 }
 
 class Library{
@@ -84,23 +137,22 @@ class Library{
 
     addToLibrary = (book) => {
         
-        this.arrayLibrary.push(book);
-
+        this.arrayLibrary.splice(0,0,book);
+       
     }
 
     getArraylibrary = () => { return this.arrayLibrary }
 
 }
 
-let hobit = new Book("HOOBIT","JWR",255,true);
-let tvd = new Book("vampiri","belea",212,false);
+let harryPotter = new Book("Harry Potter","J.K ROWLING",255,true);
+let hobbit = new Book("Hobbit","J.R.R TOLKIEN",212,false);
 
 const usedLibrary = new Library();
 const userInterface = new UI();
 
-usedLibrary.addToLibrary(hobit);
-usedLibrary.addToLibrary(tvd);
-usedLibrary.addToLibrary(hobit);
+usedLibrary.addToLibrary(harryPotter);
+usedLibrary.addToLibrary(hobbit);
 
 
 userInterface.render();

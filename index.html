@@ -11,13 +11,26 @@
 </head>
 <body>
     <div class="container-fluid w-75 h-75">
-        <div class="container-fluid side-panel w-25">
-            <button class="btn-primary">
+        <div class="container-fluid side-panel w-25 " >
+            <button class="btn-primary" data-toggle="modal" id="add-btn">
                 Add a new book!
             </button>
         </div>
+        <div class="custom-modal" id="modal">
+            <form action="" class="modal-form" id="form" required>
+                <label for="name">Book name:</label>
+                <input type="text" id="name" name="name">
+                <label for="author">Book author:</label>
+                <input type="text" id="author" name="author">
+                <label for="pages">Pages number</label>
+                <input type="text" id="pages" name="pages">
+                <label for="status">Did you read de book?</label>
+                <input type="checkbox" id="status" name="status">
+                <button type="submit"> Add</button>
+            </form>
+        </div>
         <div class="container-fluid books-container w-75" id="book-container">
-         
+            
         </div>
     </div>
  

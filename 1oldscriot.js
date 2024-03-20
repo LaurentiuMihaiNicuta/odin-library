@@ -15,6 +15,8 @@ const myLibrary = [
     }
 
 ];
+
+
 const content = document.getElementById('content');
 const modal = document.getElementById('modal');
 const addBookButton = document.getElementById('addBookButton');
@@ -130,6 +132,7 @@ function render(){
     
     checkStatus(readButton,book);
     changeColor(readButton,book,bookBody);
+    
     deleteButton.addEventListener('click', function(){
         remove(book);
     });
